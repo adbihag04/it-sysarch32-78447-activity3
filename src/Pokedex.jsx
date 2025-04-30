@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Pokemon from './Pokemon.jsx';
+
 const Pokedex = () => {
   const [pokemonList, setPokemonList] = useState([]);
   const [language, setLanguage] = useState('english');
 
   useEffect(() => {
-    fetch("https://us-central1-it-sysarch32.cloudfunctions.net/pokemon")
-      .then(response => response.json())
+    fetch("https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/pokedex.json")
+      .then(res => res.json())
       .then(data => setPokemonList(data))
-      .catch(error => console.error('Error fetching Pokemon:', error));
+      .catch(err => console.error('Error fetching Pokemon:', err));
   }, []);
 
   const handleLanguageChange = (lang) => {
@@ -23,13 +24,13 @@ const Pokedex = () => {
         <button onClick={() => handleLanguageChange('chinese')}>Chinese</button>
         <button onClick={() => handleLanguageChange('french')}>French</button>
       </div>
-      {pokemonList.map(pokemon => (
-        <Pokemon key={pokemon.id} data={pokemon} language={language} />
-      ))}
+      <div className="pokemon-list">
+        {pokemonList.map((pokemon) => (
+          <Pokemon key={pokemon.id} data={pokemon} language={language} />
+        ))}
+      </div>
     </div>
   );
 };
-
-  
 
 export default Pokedex;
